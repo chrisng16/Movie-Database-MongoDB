@@ -1,0 +1,64 @@
+# Version of Docker-compose
+version: '3.8'
+services:
+  # Service name
+  node:
+    # Creating a custom image
+    build:
+      # Location to the Dockerfile
+      context: .
+      # Name of the Dockerfile
+      dockerfile: Dockerfile
+    ports:
+        # External port:Internal port
+      - 5000:5000
+    environment:
+      - PORT=5000
+      # For security, specify a username and password as environmental variables
+      # Username for the mongo database
+      - MONGO_INITDB_ROOT_USERNAME=mern
+      # Password for the mongo database
+      - MONGO_INITDB_ROOT_PASSWORD=merndocker
+    # Enables the mongo service to start before the node service
+    depends_on:
+      - mongo
+    volumes:
+      - ./:/server:ro # Adding the read-only option
+      - /server/node_modules
+
+  mongo:
+    # Official mongo image from docker.hub
+    build: 
+      context: ./db
+      dockerfile: db.dockerfile
+    environment:
+      # Username for the mongo database
+      - MONGO_INITDB_ROOT_USERNAME=mern
+      # Password for the mongo database
+      - MONGO_INITDB_ROOT_PASSWORD=merndocker
+      - MONGO_INITDB_DATABASE=imdb
+    volumes:
+      # <nameOfVolume>:<directorInDocker>
+      - mongodb:/data/db
+
+  react:
+    build:
+      context: ./client
+      dockerfile: react.dockerfile
+    volumes:
+      - ./client:/client
+      - /client/node_modules
+    ports:
+        # External port:Internal port
+      - 3000:3000
+    depends_on:
+        # Starts up the node service before starting up the react service
+      - node
+    environment:
+      # Enabling hot reload
+      - WATCHPACK_POLLING=true
+# Making the node service volume accessible to other services.
+volumes:
+  # Declaring the node service volume.
+  nodeVolume:
+  mongodb:
