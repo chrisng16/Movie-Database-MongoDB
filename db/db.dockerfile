@@ -1,6 +1,5 @@
 FROM mongo:latest
 
-COPY ./title.basics.tsv.gz /tmp
 COPY ./init.sh /docker-entrypoint-initdb.d
 
 RUN  apt-get update \
