@@ -8,7 +8,7 @@ const userModel = require("./models/user.model");
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect("mongodb://admin:password@52.12.136.42:27017/imdb");
+mongoose.connect("mongodb://admin:password@35.166.7.9:27017/imdb");
 
 app.get("/", (req, res) => {
   res.send("hello world");
