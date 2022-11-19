@@ -11,14 +11,19 @@ body {
   padding: 0;
 }
 
+.index-div {
+    margin-top: 10px;
+    text-align: center;
+}
+
 .result-box {
  display: grid;
  grid-template-columns: 1fr;
  margin:auto;
 }
 
-.page {
-    
+.page-wrapper {
+    display: block;
     height: 100%;
 }
 #card-view {

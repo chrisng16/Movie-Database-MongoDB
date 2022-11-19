@@ -27,7 +27,7 @@ const titlesSchema = new mongoose.Schema(
       default: '\\N'
     }
   },
-  { collection: "title" }
+  { collection: "movies" }
 );
 
 const Title = new mongoose.model("Title Data", titlesSchema)
