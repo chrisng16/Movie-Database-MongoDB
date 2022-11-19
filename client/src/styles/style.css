@@ -1,3 +1,11 @@
+html, body {
+height: 100%;
+width: 100%;
+}
+
+body {
+    background-color: #c2c7ca;
+}
 * {
   margin: 0;
   padding: 0;
@@ -7,4 +15,12 @@
  display: grid;
  grid-template-columns: 1fr;
  margin:auto;
+}
+
+.page {
+    
+    height: 100%;
+}
+#card-view {
+    margin-left: 3%;
 }

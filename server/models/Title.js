@@ -6,7 +6,12 @@ const titlesSchema = new mongoose.Schema(
     tconst: requiredString,
     primaryTitle: requiredString,
     titleType: String,
-    isAdult: Boolean,
+    isAdult: {
+      type: Number,
+      enum: {
+        values: [0,1],
+      }
+    },
     startYear: {
       type: Number,
       min: 1800,
@@ -15,12 +20,15 @@ const titlesSchema = new mongoose.Schema(
     },
     runtimeMinutes: {
       type: Number,
-      require: true,
+      default: '\\N'
     },
-    genres: String,
+    genres: {
+      type:String,
+      default: '\\N'
+    }
   },
-  { collection: "titles" }
+  { collection: "title" }
 );
 
-const titlesModel = new mongoose.model("Title Data", titlesSchema)
-module.exports = titlesModel
+const Title = new mongoose.model("Title Data", titlesSchema)
+module.exports = Title

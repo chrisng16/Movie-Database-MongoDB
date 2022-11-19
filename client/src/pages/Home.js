@@ -3,9 +3,13 @@ import Card from "../components/Card";
 import NavBar from "../components/NavBar";
 import "../styles/NavBar.css";
 
+
+
+
 const Home = () => {
+
   return (
-    <div>
+    <div className="page-wrapper">
       <NavBar />
       <div className="result-box">
         <h1>Search Result for </h1>

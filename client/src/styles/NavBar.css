@@ -4,6 +4,8 @@
     height: 3.2rem;
     background: #d3d0cf;
     align-items: center;
+    top:0;
+    box-shadow: 0 5px 8px -9px rgb(0, 0, 0, 0.75);
   }
   .logo-container {
     width: 15%;

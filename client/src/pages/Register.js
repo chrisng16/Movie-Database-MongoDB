@@ -55,4 +55,4 @@ function Register() {
   );
 }
 
-export default App;
+export default Register;
