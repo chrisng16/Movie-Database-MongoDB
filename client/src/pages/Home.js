@@ -7,88 +7,52 @@ import "../styles/style.css";
 import "../styles/Home.css";
 import { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import { RadioButton } from "../components/RadioButton";
+import { Checkbox } from "../components/Checkbox";
 
 const Home = ({ setTitles }) => {
-  const welcomeText = document.getElementById("welcome-text");
+  const SEARCH_OPTION_NAME = "by Name";
+  const SEARCH_OPTION_YEAR = "by Year";
+  const SEARCH_OPTION_GENRE = "by Genre";
+  const FILTER_OPTION_IS_NOT_ADULT = "is NOT Adult";
+
   const [searchKey, setSearchKey] = useState("");
-  const [primaryTitle, setPrimaryTitle] = useState("");
-  const [startYear, setStartYear] = useState(0);
+  const [searchOption, setSearchOption] = useState(SEARCH_OPTION_NAME);
+  const [filterOption, setFilterOption] = useState(false);
 
-
-  const baseURL = "http://localhost:1337/api";
+  const baseURL = "http://localhost:1337/api/titles";
 
   let navigate = useNavigate();
   const logoClicked = () => {
-    welcomeText.style.display = "flex";
     navigate("/");
   };
-
-  async function insertTitle(event) {
-    event.preventDefault()
-
-    const response = await fetch(new URL("http://localhost:1337/api/titles/insert/"), {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        primaryTitle,
-        startYear
-      }),
-    });
-
-    const data  = await response.json()
-    console.log(data)
-  }
-
-  async function updateTitle(event) {
-    event.preventDefault()
-
-    const response = await fetch("http://localhost:1337/api/titles/update", {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        primaryTitle,
-        startYear
-      }),
-    });
-
-    const data  = await response.json()
-    console.log(data)
-  }
-
-  async function deleteTitle(event) {
-    event.preventDefault()
-
-    const response = await fetch(new URL("http://localhost:1337/api/titles/delete"), {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        primaryTitle,
-        startYear
-      }),
-    });
-
-    const data  = await response.json()
-    console.log(data)
-  }
-
+  console.log(searchOption);
   async function searchMovie(e) {
     e.preventDefault();
 
     if (searchKey) {
       try {
-        let url = new URL(`${baseURL}/titles`);
-        var query = { primaryTitle: searchKey };
+        let url = new URL(`${baseURL}`);
+        var query = {};
+        switch (searchOption) {
+          case SEARCH_OPTION_NAME:
+            query = { primaryTitle: searchKey };
+            break;
+          case SEARCH_OPTION_YEAR:
+            query = { startYear: searchKey };
+            break;
+          case SEARCH_OPTION_GENRE:
+            query = { genres: searchKey };
+            break;
+          default:
+            query = {}
+            break;
+        }
         url.search = new URLSearchParams(query);
 
         await fetch(url)
           .then((res) => res.json())
           .then((data) => {
-            welcomeText.style.display = "none";
             setTitles(data);
           });
 
@@ -98,6 +62,12 @@ const Home = ({ setTitles }) => {
       }
     }
   }
+  const filterOptionHandler = (e) => {
+    setFilterOption(!filterOption);
+  };
+  const searchOptionHandler = (e) => {
+    setSearchOption(e.target.value);
+  };
 
   return (
     <>
@@ -107,17 +77,19 @@ const Home = ({ setTitles }) => {
             <img src={logo} alt="Website Logo" />
           </div>
 
-          <div id="nav-center" className="search-box-container">
-            <input
-              value={searchKey}
-              id="search-input"
-              onChange={(e) => setSearchKey(e.target.value)}
-              type="search"
-              placeholder="Search"
-            ></input>
-            <IconButton id="search-button" onClick={searchMovie}>
-              <SearchIcon />
-            </IconButton>
+          <div id="nav-center">
+            <div className="search-box-container">
+              <input
+                value={searchKey}
+                id="search-input"
+                onChange={(e) => setSearchKey(e.target.value)}
+                type="search"
+                placeholder="Search"
+              ></input>
+              <IconButton id="search-button" onClick={searchMovie}>
+                <SearchIcon />
+              </IconButton>
+            </div>
           </div>
 
           <div className="user-button-container" id="nav-right">
@@ -129,30 +101,63 @@ const Home = ({ setTitles }) => {
             </button>
           </div>
         </div>
-        <div id="welcome-text" className="body">
-          <h1>Welcome to I am DB</h1>
-          <div>
-            <div>
-              <input
-                value={primaryTitle}
-                onChange={(e) => setPrimaryTitle(e.target.value)}
-                type="text"
-                placeholder="Title Name"
+        <div className="h-divider" />
+
+        <div className="query-options-bar">
+          <div className="search-options">
+            <div className="query-options">
+              <label>Search Options: </label>
+              <RadioButton
+                value={SEARCH_OPTION_NAME}
+                onChange={searchOptionHandler}
+                isSelected={searchOption === SEARCH_OPTION_NAME}
               />
-              <br></br>
-              <input
-                value={startYear}
-                onChange={(e) => setStartYear(e.target.value)}
-                type="number"
+              <RadioButton
+                value={SEARCH_OPTION_YEAR}
+                onChange={searchOptionHandler}
+                isSelected={searchOption === SEARCH_OPTION_YEAR}
+              />
+              <RadioButton
+                value={SEARCH_OPTION_GENRE}
+                onChange={searchOptionHandler}
+                isSelected={searchOption === SEARCH_OPTION_GENRE}
               />
             </div>
-            <button onClick={insertTitle}>Insert Titles</button>
-            <button onClick={updateTitle}>Update Titles</button>
-            <button onClick={deleteTitle}>Delete Titles</button>
           </div>
         </div>
-        <Outlet />
+        <div className="h-divider" />
+
+        <div className="filter-sort-options-bar">
+          <div className="filter-options">
+            <div className="query-options">
+              <label>Filter: </label>
+              <Checkbox
+                label={FILTER_OPTION_IS_NOT_ADULT}
+                isChecked={filterOption}
+                onChange={filterOptionHandler}
+              />
+            </div>
+          </div>
+
+          <div className="sort-options">
+            <div className="query-options sort-options">
+              <label>Sort by: </label>
+              <select className="sort-by-button" name="Sort By...">
+                <option>Name</option>
+                <option>Year</option>
+              </select>
+
+              <label>Sort order: </label>
+              <select className="sort-by-button" name="Sort By...">
+                <option>Ascending (A-Z 1-9)</option>
+                <option>Decending (Z-A 9-1)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div className="v-divider" />
       </header>
+      <Outlet />
     </>
   );
 };

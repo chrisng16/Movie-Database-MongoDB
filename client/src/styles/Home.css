@@ -1,11 +1,30 @@
 .nav-bar {
   display: flex;
   width: 100%;
-  height: 3.2rem;
-  background: #d3d0cf;
+  height: 3.5rem;
+  background: #a4aab1;
   align-items: center;
   top: 0;
+}
+
+.query-options-bar {
+  width: 100%;
+  display: flex;
+  background: #a4aab1;
   box-shadow: 0 5px 8px -9px rgb(0, 0, 0, 0.75);
+  height: 1.8rem;
+  vertical-align: middle;
+  margin: auto;
+}
+
+.filter-sort-options-bar {
+  width: 100%;
+  display: flex;
+  background: #a4aab1;
+  box-shadow: 0 5px 8px -9px rgb(0, 0, 0, 0.75);
+  height: 1.8rem;
+  vertical-align: middle;
+  margin: auto;
 }
 
 .body{
@@ -26,7 +45,7 @@
 }
 
 .search-box-container {
-  width: 40%;
+  width: 100%;
   position: relative;
   display: flex;
   background: white;
@@ -71,4 +90,21 @@
 }
 #user-button {
   outline: black;
+}
+
+#nav-center {
+  width: 40%;
+}
+.v-divider {
+  border-left: 2px solid rgb(22, 21, 21);
+  margin: 4px 20px;
+}
+
+.query-options {
+  margin-top: 5px;
+  margin-left: 10px;
+}
+
+select {
+  margin-right: 10px;
 }

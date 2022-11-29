@@ -4,7 +4,7 @@ import "../styles/Card.css";
 import "../styles/style.css";
 
 function Search({ titles }) {
-  
+
   const displayTitle = (titles) => {
     if (!titles.nResults) return null;
     return titles.titles.map((title, index) => (
@@ -22,7 +22,7 @@ function Search({ titles }) {
   return (
     <div className="page-wrapper">
       <div className="result-box">
-        <h1>Search Result for </h1>
+        <h1> Getting {titles.nResults} Search Result</h1>
         <div id="card-view">
           {displayTitle(titles)}
         </div>

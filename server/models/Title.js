@@ -1,15 +1,17 @@
 const mongoose = require("mongoose");
-const requiredString = { type: String, require: true };
 
 const titlesSchema = new mongoose.Schema(
   {
-    primaryTitle: requiredString,
+    primaryTitle: {
+      type: String,
+      require: true,
+    },
     titleType: String,
     isAdult: {
       type: Number,
       enum: {
-        values: [0,1],
-      }
+        values: [0, 1],
+      },
     },
     startYear: {
       type: Number,
@@ -19,15 +21,15 @@ const titlesSchema = new mongoose.Schema(
     },
     runtimeMinutes: {
       type: Number,
-      default: 0
+      default: 0,
     },
     genres: {
-      type:String,
-      default: '\\N'
-    }
+      type: String,
+      default: "\\N",
+    },
   },
   { collection: "movies" }
 );
 
-const Title = new mongoose.model("Title Data", titlesSchema)
-module.exports = Title
+const Title = new mongoose.model("Title Data", titlesSchema);
+module.exports = Title;

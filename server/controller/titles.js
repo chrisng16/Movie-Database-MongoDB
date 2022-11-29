@@ -7,11 +7,13 @@ const getAllTitles = async (req, res) => {
 
 const insertTitle = async (req, res) => {
 
-  console.log(`${req.body.primaryTitle} ${req.body.startYear}`)
-  const primaryTitle = req.body.primaryTitle || "demo"
-  const startYear = Number(req.body.startYear) || 2022
+  // temp = JSON.stringify(req.body)
+  
+  // const primaryTitle = String(req.body.primaryTitle)
+  // const startYear = Number(req.body.startYear)
+  console.log(typeof(String(req.body.primaryTitle)))
 
-  const result = await Title.create({primaryTitle: "demo", startYear: 2000})
+  const result = await Title.create(req.body)
 
   res.status(200).json({result, msg:'demo is inserted'})
 }
@@ -41,7 +43,7 @@ const getTitles = async (req, res) => {
     primaryTitle,
     startYear,
     isAdult,
-    titleType,
+    genres,
     sort,
     numericFilter,
   } = req.query;
@@ -51,8 +53,8 @@ const getTitles = async (req, res) => {
 
   // Types of query
   if (primaryTitle) {
-    // queryObject.primaryTitle = { $regex: primaryTitle, $options: "i" };
-    queryObject.primaryTitle = primaryTitle;
+    queryObject.primaryTitle = { $regex: primaryTitle, $options: "i" };
+    // queryObject.primaryTitle = primaryTitle;
   }
   if (startYear) {
     queryObject.startYear = startYear;
@@ -60,8 +62,8 @@ const getTitles = async (req, res) => {
   if (isAdult) {
     queryObject.isAdult = isAdult;
   }
-  if (titleType) {
-    queryObject.titleType = { $regex: titleType, $options: "i" };
+  if (genres) {
+    queryObject.genres = { $regex: genres, $options: "i" };
   }
 
   // Mongoose numericFilter
@@ -99,14 +101,14 @@ const getTitles = async (req, res) => {
   }
 
   // Page, Limit result on each page
-  const page = Number(req.query.page) || 1;
-  const limit = Number(req.query.limit) || 10;
-  const skip = (page - 1) * limit;
+  // const page = Number(req.query.page) || 1;
+  // const limit = Number(req.query.limit) || 10;
+  // const skip = (page - 1) * limit;
 
-  result = result.skip(skip).limit(limit);
+  // result = result.skip(skip).limit(limit);
 
   const titles = await result;
-  res.status(200).json({ titles, nResults: titles.length });
+  res.status(200).json({ titles, nResults: titles.length});
 };
 
 module.exports = {
