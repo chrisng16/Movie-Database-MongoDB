@@ -5,6 +5,35 @@ const getAllTitles = async (req, res) => {
   res.status(200).json(titles);
 };
 
+const insertTitle = async (req, res) => {
+
+  console.log(`${req.body.primaryTitle} ${req.body.startYear}`)
+  const primaryTitle = req.body.primaryTitle || "demo"
+  const startYear = Number(req.body.startYear) || 2022
+
+  const result = await Title.create({primaryTitle: "demo", startYear: 2000})
+
+  res.status(200).json({result, msg:'demo is inserted'})
+}
+
+const deleteTitle = async (req, res) => {
+  const primaryTitle = req.body.primaryTitle
+  const startYear = req.body.startYear
+
+  const result = await Title.deleteOne({primaryTitle: {primaryTitle}})
+
+  res.status(200).json(result, {msg:`${primaryTitle} is updated`})
+}
+
+const updateTitle = async (req, res) => {
+  const primaryTitle = req.body.primaryTitle || 'demo'
+  const startYear = req.body.startYear || 2022
+
+  const result = await Title.updateOne({primaryTitle: {primaryTitle}}, {$set: { startYear: {startYear}}})
+
+  res.status(200).json(result, {msg:`${primaryTitle} is updated`})
+}
+
 const getTitles = async (req, res) => {
   console.log(req.query);
   // Query Options can be passed into function
@@ -83,4 +112,7 @@ const getTitles = async (req, res) => {
 module.exports = {
   getAllTitles,
   getTitles,
+  insertTitle,
+  updateTitle,
+  deleteTitle
 };

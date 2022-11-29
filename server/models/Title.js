@@ -3,7 +3,6 @@ const requiredString = { type: String, require: true };
 
 const titlesSchema = new mongoose.Schema(
   {
-    tconst: requiredString,
     primaryTitle: requiredString,
     titleType: String,
     isAdult: {
@@ -20,7 +19,7 @@ const titlesSchema = new mongoose.Schema(
     },
     runtimeMinutes: {
       type: Number,
-      default: '\\N'
+      default: 0
     },
     genres: {
       type:String,
