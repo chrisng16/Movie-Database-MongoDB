@@ -11,22 +11,26 @@ import { RadioButton } from "../components/RadioButton";
 import { Checkbox } from "../components/Checkbox";
 
 const Home = ({ setTitles }) => {
-  const SEARCH_OPTION_NAME = "by Name";
-  const SEARCH_OPTION_YEAR = "by Year";
-  const SEARCH_OPTION_GENRE = "by Genre";
+  const OPTION_NAME = "Name";
+  const OPTION_YEAR = "Year";
+  const OPTION_GENRE = "Genre";
   const FILTER_OPTION_IS_NOT_ADULT = "is NOT Adult";
 
-  const [searchKey, setSearchKey] = useState("");
-  const [searchOption, setSearchOption] = useState(SEARCH_OPTION_NAME);
-  const [filterOption, setFilterOption] = useState(false);
+  const SORT_ORDER_ASCENDING = "ascending"
+  const SORT_ORDER_DECENDING = "decending"
 
+  const [searchKey, setSearchKey] = useState("");
+  const [searchOption, setSearchOption] = useState(OPTION_NAME);
+  const [filterOption, setFilterOption] = useState(true);
+  const [sortBy, setSortBy] = useState(searchOption)
+  const [sortOrder, setSortOrder] = useState(SORT_ORDER_ASCENDING)
   const baseURL = "http://localhost:1337/api/titles";
 
   let navigate = useNavigate();
   const logoClicked = () => {
     navigate("/");
   };
-  console.log(searchOption);
+
   async function searchMovie(e) {
     e.preventDefault();
 
@@ -35,19 +39,25 @@ const Home = ({ setTitles }) => {
         let url = new URL(`${baseURL}`);
         var query = {};
         switch (searchOption) {
-          case SEARCH_OPTION_NAME:
-            query = { primaryTitle: searchKey };
+          case OPTION_NAME:
+            Object.assign(query, {primaryTitle:searchKey})
             break;
-          case SEARCH_OPTION_YEAR:
-            query = { startYear: searchKey };
+          case OPTION_YEAR:
+            Object.assign(query, {startYear:searchKey})
             break;
-          case SEARCH_OPTION_GENRE:
-            query = { genres: searchKey };
+          case OPTION_GENRE:
+            Object.assign(query, {genres:searchKey})
             break;
           default:
-            query = {}
             break;
         }
+
+        if(filterOption) Object.assign(query, {isAdult:0})
+        var sortOption = sortBy===OPTION_NAME ? "primaryTitle" : "startYear"
+        if (sortOrder===SORT_ORDER_DECENDING) sortOption = "-"+sortOption
+        Object.assign(query, {sort: sortOption})
+
+        console.log(query)
         url.search = new URLSearchParams(query);
 
         await fetch(url)
@@ -58,16 +68,27 @@ const Home = ({ setTitles }) => {
 
         navigate("/search"+url.search);
       } catch (error) {
-        console.log(error.name);
+        console.log(error);
       }
     }
   }
   const filterOptionHandler = (e) => {
     setFilterOption(!filterOption);
+    console.log(`Filter changed: ${filterOption}`)
   };
   const searchOptionHandler = (e) => {
+    console.log(`Search option changed: ${e.target.value}`)
     setSearchOption(e.target.value);
   };
+
+  const sortByHandler = (e) => {
+    console.log(`Sort option changed: ${e.target.value}`)
+    setSortBy(e.target.value)
+  }
+  const sortOrderHandler = (e) => {
+    console.log(`Sort order changed: ${e.target.value}`)
+    setSortOrder(e.target.value)
+  }
 
   return (
     <>
@@ -95,9 +116,9 @@ const Home = ({ setTitles }) => {
           <div className="user-button-container" id="nav-right">
             <button id="user-button">
               <Avatar src={defaultAvatar} />
-              <text id="user-name-txtbox" placeholder="Avatar">
+              <label id="user-name-txtbox" placeholder="Avatar">
                 Avatar
-              </text>
+              </label>
             </button>
           </div>
         </div>
@@ -108,19 +129,19 @@ const Home = ({ setTitles }) => {
             <div className="query-options">
               <label>Search Options: </label>
               <RadioButton
-                value={SEARCH_OPTION_NAME}
+                value={OPTION_NAME}
                 onChange={searchOptionHandler}
-                isSelected={searchOption === SEARCH_OPTION_NAME}
+                isSelected={searchOption === OPTION_NAME}
               />
               <RadioButton
-                value={SEARCH_OPTION_YEAR}
+                value={OPTION_YEAR}
                 onChange={searchOptionHandler}
-                isSelected={searchOption === SEARCH_OPTION_YEAR}
+                isSelected={searchOption === OPTION_YEAR}
               />
               <RadioButton
-                value={SEARCH_OPTION_GENRE}
+                value={OPTION_GENRE}
                 onChange={searchOptionHandler}
-                isSelected={searchOption === SEARCH_OPTION_GENRE}
+                isSelected={searchOption === OPTION_GENRE}
               />
             </div>
           </div>
@@ -144,28 +165,17 @@ const Home = ({ setTitles }) => {
           <div className="sort-options">
             <div className="query-options sort-options">
               <label>Sort by: </label>
-              <select className="sort-by-button" name="sort-by">
-                <option>Name</option>
-                <option>Year</option>
+              <select className="sort-by-button" name="sort-by" onChange={sortByHandler}>
+                <option value={OPTION_NAME}>Name</option>
+                <option value={OPTION_YEAR}>Year</option>
               </select>
 
               <label>Sort order: </label>
-              <select className="sort-by-button" name="sort-order">
-                <option>Ascending (A-Z 1-9)</option>
-                <option>Decending (Z-A 9-1)</option>
+              <select className="sort-by-button" name="sort-order" onChange={sortOrderHandler}>
+                <option value={SORT_ORDER_ASCENDING}>Ascending (A-Z 1-9)</option>
+                <option value={SORT_ORDER_DECENDING}>Decending (Z-A 9-1)</option>
               </select>
             </div>
-          </div>
-          <div className="v-divider" />
-
-          <div className="query-options">
-          <label>Title per Page: </label>
-              <select className="sort-by-button" name="titles-per-page">
-                <option>10</option>
-                <option>25</option>
-                <option>50</option>
-                <option>Unlimited</option>
-              </select>
           </div>
         </div>
         
