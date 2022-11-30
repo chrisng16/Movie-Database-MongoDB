@@ -7,12 +7,7 @@ import Index from "./pages/Index";
 
 const App = () => {
   const [titles, setTitles] = useState({});
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [titlesPerPage, setTitlesPerPage] = useState(10);
 
-  // const indexOfLastTitle = currentPage * titlesPerPage;
-  // const indexOfFirstTitle = indexOfLastTitle - titlesPerPage;
-  // const currentTitles = titles.slice(indexOfFirstTitle, indexOfLastTitle);
 
   return (
     <BrowserRouter>
@@ -21,7 +16,7 @@ const App = () => {
           <Route path="index" element={<Index />} />
           <Route
             path="search"
-            element={<Search titles={currentTitles} />}
+            element={<Search titles={titles} />}
           ></Route>
         </Route>
       </Routes>

@@ -56,7 +56,7 @@ const Home = ({ setTitles }) => {
             setTitles(data);
           });
 
-        navigate("/search");
+        navigate("/search"+url.search);
       } catch (error) {
         console.log(error.name);
       }
@@ -139,23 +139,36 @@ const Home = ({ setTitles }) => {
             </div>
           </div>
 
+          <div className="v-divider" />
+
           <div className="sort-options">
             <div className="query-options sort-options">
               <label>Sort by: </label>
-              <select className="sort-by-button" name="Sort By...">
+              <select className="sort-by-button" name="sort-by">
                 <option>Name</option>
                 <option>Year</option>
               </select>
 
               <label>Sort order: </label>
-              <select className="sort-by-button" name="Sort By...">
+              <select className="sort-by-button" name="sort-order">
                 <option>Ascending (A-Z 1-9)</option>
                 <option>Decending (Z-A 9-1)</option>
               </select>
             </div>
           </div>
+          <div className="v-divider" />
+
+          <div className="query-options">
+          <label>Title per Page: </label>
+              <select className="sort-by-button" name="titles-per-page">
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+                <option>Unlimited</option>
+              </select>
+          </div>
         </div>
-        <div className="v-divider" />
+        
       </header>
       <Outlet />
     </>

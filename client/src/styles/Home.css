@@ -96,8 +96,11 @@
   width: 40%;
 }
 .v-divider {
-  border-left: 2px solid rgb(22, 21, 21);
+  border-left: 2px solid rgb(134, 128, 128);
   margin: 4px 20px;
+}
+.h-divider {
+  border-top: 2px solid rgb(134, 128, 128);
 }
 
 .query-options {
