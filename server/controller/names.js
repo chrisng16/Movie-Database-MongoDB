@@ -27,6 +27,13 @@ const getNames = async (req, res) => {
     res.status(200).json({names, nResults: names.length});
 };
 
+const getNameById = async (req, res) => {
+    console.log("nconst:req.params.nconst", req.params.nconst);
+    const name = await Name.find({ nconst: req.params.nconst }).limit(1);
+    console.log(name);
+    res.status(200).json(name);
+};
+
 // TODO:
 // Insert casts -- Tested
 const insertName = async (req, res) => {
@@ -58,6 +65,7 @@ const deleteName = async (req, res) => {
 module.exports = {
     getAllNames,
     getNames,
+    getNameById,
     insertName,
     updateName,
     deleteName
