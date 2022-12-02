@@ -28,9 +28,11 @@ const getNames = async (req, res) => {
 };
 
 // TODO:
-// Delete
-// Insert 
-// Update
+// Delete casts by const
+// Insert casts by const
+// Update casts by const
+
+// Build the UI for individual cast
 
 module.exports = {
     getAllNames,
