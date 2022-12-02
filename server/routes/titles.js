@@ -6,7 +6,7 @@ const { getAllTitles, getTitles, insertTitle, updateTitle, deleteTitle } = requi
 router.route("/all").get(getAllTitles);
 router.route("/").get(getTitles)
 router.route("/insert").post(insertTitle)
-router.route("update").get(updateTitle)
-router.route("delete").get(deleteTitle)
+router.route("/update").put(updateTitle)
+router.route("/delete").delete(deleteTitle)
 
 module.exports = router;

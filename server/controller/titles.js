@@ -5,6 +5,7 @@ const getAllTitles = async (req, res) => {
   res.status(200).json(titles);
 };
 
+// TESTED
 const insertTitle = async (req, res) => {
 
   // temp = JSON.stringify(req.body)
@@ -18,12 +19,13 @@ const insertTitle = async (req, res) => {
   res.status(200).json({result, msg:'demo is inserted'})
 }
 
+// HAVENT TESTED
 const deleteTitle = async (req, res) => {
+  console.log(req.body)
   const primaryTitle = req.body.primaryTitle
   const startYear = req.body.startYear
 
-  const result = await Title.deleteOne({primaryTitle: {primaryTitle}})
-
+  const result = await Title.deleteOne({primaryTitle: primaryTitle})
   res.status(200).json(result, {msg:`${primaryTitle} is updated`})
 }
 

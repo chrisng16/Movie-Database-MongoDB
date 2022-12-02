@@ -4,7 +4,6 @@ const nameSchema = new mongoose.Schema(
   {
     nconst: {
         type: String,
-        unique: true,
     },
 
     primaryName: {
@@ -18,7 +17,7 @@ const nameSchema = new mongoose.Schema(
 
     deathYear: {
         type: Number,
-        default: "\\N"
+        default: 0
     },
 
     primaryProfession: {

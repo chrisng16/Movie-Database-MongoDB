@@ -28,13 +28,37 @@ const getNames = async (req, res) => {
 };
 
 // TODO:
-// Delete casts by const
-// Insert casts by const
-// Update casts by const
+// Insert casts -- Tested
+const insertName = async (req, res) => {
+    console.log(req.body)
+    const result = await Name.create(req.body)
+    res.status(200).json({result, msg:'demo is inserted'})
+};
 
-// Build the UI for individual cast
+// Update casts by const -- HAVENT TESTED
+const updateName = async (req, res) => {
+    const nconst = req.body.nconst
+    const primaryName = req.body.primaryName
+
+    const result = await Name.updateOne({nconst: {nconst}}, {$set: {primaryName: {primaryName}}})
+  
+    res.status(200).json(result, {msg:`${primaryTitle} is updated`})
+};
+
+// Delete casts by const -- HAVENT TESTED
+const deleteName = async (req, res) => {
+    const nconst = req.body.nconst
+  
+    const result = await Title.deleteOne({nconst: {nconst}});
+    res.status(200).json(result, {msg:`${primaryName} is deleted`})
+  }
+
+// Build the UI for individual cast <-- TODO
 
 module.exports = {
     getAllNames,
-    getNames
+    getNames,
+    insertName,
+    updateName,
+    deleteName
 };
