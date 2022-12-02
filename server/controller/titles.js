@@ -166,7 +166,7 @@ const getTitles = async (req, res) => {
 
   // Base query (return db.collection.find() if no option passed)
   const queryObject = {};
-
+  
   // Types of query
   if (primaryTitle) {
     queryObject.primaryTitle = { $regex: primaryTitle, $options: "i" };
