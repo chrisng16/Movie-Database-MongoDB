@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import Title from "./pages/Title";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import CastDetail from "./pages/CastDetail";
 
 const App = () => {
   const [titles, setTitles] = useState([]);
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="search" element={<Search titles={titles} />} />
           <Route path="login" element={<Login setLoggedIn={setLoggedInStatus}/>} />
           <Route path="register" element={<Register />} />
+          <Route path="cast/:nconst" element={<CastDetail />}/>
         </Route>
         <Route path="title/:tconst" element={<Title />} />
       </Routes>
