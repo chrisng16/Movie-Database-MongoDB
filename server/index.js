@@ -6,7 +6,8 @@ const app = express();
 
 const connectDB = require("./db/connect");
 
-const titlesRouter = require("./routes/titles");
+const titleRouter = require("./routes/title");
+const userRouter = require("./routes/user");
 const namesRouter = require("./routes/names");
 
 // middleware
@@ -20,26 +21,16 @@ app.use(express.json());
 
 const port = process.env.PORT || 1337;
 
-//route
-app.get("/", (req, res) => {
-  res.send('<h1>imdb API</h1><a href="/api/titles">Get Titles</a>');
-});
-
-
-app.use("/api/titles", titlesRouter);
+app.use("/api/titles", titleRouter);
+app.use("/api/users", userRouter);
 
 // names routes
 app.use("/api/names", namesRouter);
 
 
 // movies routes
-// app.use(errorHandlerMiddleware);
-// app.use(notFoundMiddleware);
-
-const User = require("./models/User");
-const Title = require("./models/Title");
-
-
+app.use(errorHandlerMiddleware);
+app.use(notFoundMiddleware);
 
 const start = async () => {
   try {

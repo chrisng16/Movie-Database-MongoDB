@@ -1,23 +1,24 @@
 import React from "react";
 import logo from "../assets/logo.png";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
+import {
+  InputAdornment,
+  IconButton,
+  Box,
+  Grid,
+  Link,
+  TextField,
+  CssBaseline,
+  Button,
+  Typography,
+  Container,
+} from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { InputAdornment, IconButton } from "@mui/material";
 import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const theme = createTheme();
 
-export default function SignIn() {
+export default function SignIn({ setLoggedInStatus }) {
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = () => setShowPassword(!showPassword);
@@ -35,7 +36,7 @@ export default function SignIn() {
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="sm">
         <CssBaseline />
-        
+
         <Box
           sx={{
             m: 8,
@@ -59,7 +60,7 @@ export default function SignIn() {
             alt="I am DB logo"
           />
           <Typography component="h1" variant="h5">
-            Sign in
+            Log In
           </Typography>
           <Box
             component="form"
@@ -83,7 +84,7 @@ export default function SignIn() {
               fullWidth
               name="password"
               label="Password"
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               id="password"
               autoComplete="current-password"
               InputProps={{
@@ -106,13 +107,13 @@ export default function SignIn() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Log In
             </Button>
 
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/register" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                  {"Don't have an account? Register"}
                 </Link>
               </Grid>
             </Grid>

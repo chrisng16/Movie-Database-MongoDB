@@ -1,16 +1,19 @@
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
-import Avatar from "@mui/material/Avatar";
 import logo from "../assets/logo.png";
-import defaultAvatar from "../assets/avatar.jpeg";
 import "../styles/style.css";
 import "../styles/Home.css";
 import { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { RadioButton } from "../components/RadioButton";
 import { Checkbox } from "../components/Checkbox";
+import { UserButton } from "../components/UserButton";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 
-const Home = ({ setTitles }) => {
+const theme = createTheme();
+
+const Home = ({ setTitles, loggedInStatus }) => {
   const OPTION_NAME = "Name";
   const OPTION_YEAR = "Year";
   const OPTION_GENRE = "Genre";
@@ -21,7 +24,7 @@ const Home = ({ setTitles }) => {
 
   const [searchKey, setSearchKey] = useState("");
   const [searchOption, setSearchOption] = useState(OPTION_NAME);
-  const [filterOption, setFilterOption] = useState(true);
+  const [filterOption, setFilterOption] = useState(false);
   const [sortBy, setSortBy] = useState(searchOption);
   const [sortOrder, setSortOrder] = useState(SORT_ORDER_ASCENDING);
   const baseURL = "http://localhost:1337/api/titles";
@@ -91,7 +94,8 @@ const Home = ({ setTitles }) => {
   };
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
       <header>
         <div className="nav-bar">
           <div id="nav-left" className="logo-container" onClick={logoClicked}>
@@ -113,14 +117,7 @@ const Home = ({ setTitles }) => {
             </div>
           </div>
 
-          <div className="user-button-container" id="nav-right">
-            <button id="user-button">
-              <Avatar src={defaultAvatar} />
-              <label id="user-name-txtbox" placeholder="Avatar">
-                Avatar
-              </label>
-            </button>
-          </div>
+          <UserButton loggedInStatus={loggedInStatus} />
         </div>
         <div className="h-divider" />
 
@@ -192,7 +189,7 @@ const Home = ({ setTitles }) => {
         </div>
       </header>
       <Outlet />
-    </>
+    </ThemeProvider>
   );
 };
 

@@ -1,9 +1,9 @@
-.card {
+.cast-card {
     border: #7c868a;
-    background: rgb(199, 199, 194);
+    background: whitesmoke;
     width: 80%;
     border-radius: 10px;
-    max-width: 500px;
+    max-width: 300px;
     margin-top: 10px;
     margin-left: 10px;
     height: auto;
