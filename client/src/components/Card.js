@@ -1,6 +1,7 @@
 import "../styles/Card.css";
+import { Link } from "react-router-dom";
 
-const Card = (movie) => {
+const Card = ({movie}) => {
   return (
     <div className="card">
       <h2 className="card-name">{movie.primaryTitle}</h2>
@@ -8,7 +9,7 @@ const Card = (movie) => {
       <p className="card-details-type-genres">
         {movie.titleType} - {movie.genres}
       </p>
-      <button className="card-btn">Details</button>
+      <a href={`/title/${movie.tconst}`} className="card-btn">Details</a>
     </div>
   );
 };

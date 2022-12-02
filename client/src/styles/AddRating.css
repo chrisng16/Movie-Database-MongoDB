@@ -1,0 +1,18 @@
+.rating-container {
+    display: flex;
+    justify-content:flex-start;
+    flex-direction: row;
+}
+
+.col {
+    margin-right: 50px;
+}
+.rating-card {
+    border: #7c868a;
+    width: 80%;
+    border-radius: 2px;
+    margin-top: 10px;
+    margin-left: 10px;
+    height: auto;
+    padding: 1rem;
+}

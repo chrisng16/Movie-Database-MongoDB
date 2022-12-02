@@ -1,0 +1,25 @@
+.title-heading {
+    margin-bottom: 20px;
+}
+.cards-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.title-rating {
+    display: flex;
+    flex-direction:row;
+    justify-content:stretch;
+}
+.title-section {
+    margin-right: 200px;
+}
+.title-page {
+    margin-left: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.cast-container {
+    display: flex;
+    flex-direction: row;
+}

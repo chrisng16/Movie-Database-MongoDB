@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import { useState } from "react";
 import Search from "./pages/Search";
 import Index from "./pages/Index";
+import Title from "./pages/Title";
 
 const App = () => {
   const [titles, setTitles] = useState({});
@@ -16,9 +17,9 @@ const App = () => {
           <Route path="index" element={<Index />} />
           <Route
             path="search"
-            element={<Search titles={titles} />}
-          ></Route>
+            element={<Search titles={titles} />} ></Route>
         </Route>
+        <Route path="title/:tconst" element={<Title />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,7 +1,19 @@
 const mongoose = require("mongoose");
 
+const reviewsSchema = new mongoose.Schema({
+  reviewTitle     : String,
+  description      : String,
+  date      : Date
+});
+
+const ratingsSchema = new mongoose.Schema({
+  averageRating     : Number,
+  numVotes      : Number
+});
+
 const titlesSchema = new mongoose.Schema(
   {
+    tconst: String,
     primaryTitle: {
       type: String,
       require: true,
@@ -27,9 +39,15 @@ const titlesSchema = new mongoose.Schema(
       type: String,
       default: "\\N",
     },
+    reviews: [reviewsSchema],
+    ratings: ratingsSchema,
   },
   { collection: "movies" }
 );
 
 const Title = new mongoose.model("Title Data", titlesSchema);
-module.exports = Title;
+const Review = new mongoose.model("Review Data", reviewsSchema);
+const Rating = new mongoose.model("Rating Data", ratingsSchema);
+module.exports.Title = Title;
+module.exports.Review = Review;
+module.exports.Rating = Rating;
