@@ -9,7 +9,7 @@ const CastCard = ({ actor }) => {
                 <p>{(actor.details.primaryProfession && actor.details.primaryProfession !== "\\N") ? "Profession: " + actor.details.primaryProfession : ""}</p>
             </div>
             <div className="col">
-                <a href={`/title/${actor.cast.nconst}`} className="card-btn">Details</a>
+                <a href={`/cast/${actor.cast.nconst}`} className="card-btn">Details</a>
             </div>
         </div>
     );

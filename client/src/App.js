@@ -18,11 +18,11 @@ const App = () => {
         <Route path="/" element={<Home setTitles={setTitles} loggedInStatus={loggedInStatus} />}>
           <Route path="index" element={<Index />} />
           <Route path="search" element={<Search titles={titles} />} />
-          <Route path="login" element={<Login setLoggedIn={setLoggedInStatus}/>} />
+          <Route path="login" element={<Login setLoggedIn={setLoggedInStatus} />} />
           <Route path="register" element={<Register />} />
-          <Route path="cast/:nconst" element={<CastDetail />}/>
+          <Route path="cast/:nconst" element={<CastDetail />} />
+          <Route path="title/:tconst" element={<Title />} />
         </Route>
-        <Route path="title/:tconst" element={<Title />} />
       </Routes>
     </BrowserRouter>
   );
