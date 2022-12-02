@@ -7,6 +7,7 @@ const app = express();
 const connectDB = require("./db/connect");
 
 const titlesRouter = require("./routes/titles");
+const namesRouter = require("./routes/names");
 
 // middleware
 const errorHandlerMiddleware = require("./middleware/error-handler");
@@ -26,6 +27,9 @@ app.get("/", (req, res) => {
 
 
 app.use("/api/titles", titlesRouter);
+
+// names routes
+app.use("/api/names", namesRouter);
 
 
 // movies routes
