@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { getAllTitles, getTitles, insertTitle, updateTitle, deleteTitle, getTitleById, insertReview, updateReview, deleteReview, addRating, getSimilarMovies } = require("../controller/titles");
+const { getAllTitles, getTitles, insertTitle, updateTitle, deleteTitle, getTitleById, insertReview, updateReview, deleteReview, addRating, getSimilarMovies } = require("../controller/title");
 
 router.route("/all").get(getAllTitles);
 router.route("/").get(getTitles)

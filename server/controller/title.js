@@ -20,54 +20,62 @@ const insertTitle = async (req, res) => {
 
 const getSimilarMovies = async (req, res) => {
   const tconst = req.params.tconst;
-  const curTitle = (await Title.find({"tconst": tconst}).limit(1))[0];
+  const curTitle = (await Title.find({ "tconst": tconst }).limit(1))[0];
   const decadeStart = curTitle.startYear - (curTitle.startYear % 10);
-  const decadeEnd = curTitle.startYear + (10 - (curTitle.startYear % 10)); 
+  const decadeEnd = curTitle.startYear + (10 - (curTitle.startYear % 10));
   const genres = curTitle.genres.split(",");
   const titles = await Title.aggregate(
     [
       // Match the possible documents to reduce the working set
-      { "$match": {
-         "tconst": { "$ne":tconst },
-         "startYear": {$gte:decadeStart, $lte:decadeEnd}
-      }},
-   
+      {
+        "$match": {
+          "tconst": { "$ne": tconst },
+          "startYear": { $gte: decadeStart, $lte: decadeEnd }
+        }
+      },
+
       // Project a copy of the document if you want to keep more than `_id`
-      { "$project": {
+      {
+        "$project": {
           "_id": {
-              "_id": "$_id",
-              "genres": "$genres",
-              "startYear":"$startYear",
-              "primaryTitle": "$primaryTitle",
-              "titleType": "$titleType",
-              "tconst": "$tconst"
+            "_id": "$_id",
+            "genres": "$genres",
+            "startYear": "$startYear",
+            "primaryTitle": "$primaryTitle",
+            "titleType": "$titleType",
+            "tconst": "$tconst"
           },
           "genres": { $split: ["$genres", ","] },
-      }},
-   
+        }
+      },
+
       // Match the possible documents to reduce the working set
-      { "$match": {
-         "genres": {$in: genres}
-      }},
-      {$limit: 100},
-   
+      {
+        "$match": {
+          "genres": { $in: genres }
+        }
+      },
+      { $limit: 100 },
+
       // Find the "set intersection" of the two arrays
-      { "$project": {
+      {
+        "$project": {
           "genres": {
-              "$size": {
-                  "$setIntersection": [
-                     genres,
-                     "$genres"
-                  ]
-              }
+            "$size": {
+              "$setIntersection": [
+                genres,
+                "$genres"
+              ]
+            }
           }
-      }},
-   
+        }
+      },
+
       // Filter the results to those that actually match
       { "$match": { "genres": { "$gte": 2 } } },
-      {$limit: 10}
-   
-   ]
+      { $limit: 10 }
+
+    ]
   );
   res.status(200).json(titles);
 };
@@ -131,7 +139,7 @@ const deleteTitle = async (req, res) => {
   const primaryTitle = req.body.primaryTitle;
   const startYear = req.body.startYear;
 
-  const result = await Title.deleteOne({  primaryTitle: {  primaryTitle  }  });
+  const result = await Title.deleteOne({ primaryTitle: { primaryTitle } });
 
   res.status(200).json(result, { msg: `${primaryTitle} is updated` })
 }
@@ -147,9 +155,23 @@ const updateTitle = async (req, res) => {
 
 const getTitleById = async (req, res) => {
   console.log("tconst:req.params.tconst", req.params.tconst);
-  const titles = await Title.find({ tconst: req.params.tconst }).limit(1);
-  console.log(titles);
-  res.status(200).json(titles);
+  const curTitle = await Title.aggregate([
+    {
+      $match: {
+        tconst: req.params.tconst
+      }
+    },
+    {
+      $lookup: {
+        from: "names",
+        localField: "cast.nconst",
+        foreignField: "nconst",
+        as: "castDetails"
+      }
+    },
+  ])
+  console.log(curTitle);
+  res.status(200).json(curTitle);
 }
 
 const getTitles = async (req, res) => {
@@ -200,8 +222,8 @@ const getTitles = async (req, res) => {
     const options = ["startYear", "runtimeMinutes"];
     filters = filters.split(",").forEach((item) => {
       const [field, operator, value] = item.split("-");
-      if  (options.includes(flield)) {
-        queryObject[field] = {  [operator]: Number(value)  };
+      if (options.includes(flield)) {
+        queryObject[field] = { [operator]: Number(value) };
       }
     });
   }

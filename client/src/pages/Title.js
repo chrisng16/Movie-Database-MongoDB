@@ -11,8 +11,9 @@ function Title() {
     const { tconst } = useParams();
 
     const [title, setTitle] = useState(0);
-    const [reviews, setReviews] = useState(0);
-    const [similarMovies, setSimilarMovies] = useState(0);
+    const [reviews, setReviews] = useState([]);
+    const [similarMovies, setSimilarMovies] = useState([]);
+    const [cast, setCast] = useState([]);
 
     useEffect(() => {
         getTitleDetails();
@@ -25,6 +26,12 @@ function Title() {
             .then(res => {
                 setTitle(res[0] ? res[0] : null);
                 setReviews(res[0].reviews);
+                let castArr = [];
+                for(let i=0; i<res[0].cast.length; i++){
+                    castArr.push({"cast": res[0].cast[i], "details": res[0].castDetails[i]});
+                }
+                castArr.sort((item1, item2)=> item1.cast.ordering - item2.cast.ordering);
+                setCast(castArr);
             }).catch(err => console.log(err));
     }
     async function getSimilarMovies() {
@@ -52,12 +59,15 @@ function Title() {
                     </div>
                 </div>
             </div>
+            <hr />
             <div className="cast-section">
                 <h2>Cast</h2>
                 <div className="cast-container">
-                    <CastCard />
-                    <CastCard />
-                    <CastCard />
+                    {
+                        title.cast ? 
+                        cast.map(item => (<CastCard actor={item} key={item.cast.ordering}/>))
+                        :""
+                    }
                 </div>
             </div>
             <br />

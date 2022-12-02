@@ -1,0 +1,40 @@
+mongoimport--db testdb--collection cast--type tsv --file title.principals.tsv--headerline
+mongoimport--db testdb--collection ratings--type tsv --file title.ratings.tsv--headerline
+mongoimport--db testdb--collection names--type tsv --file name.basics.tsv--headerline
+
+
+
+db.movies.aggregate([
+    {
+        $lookup: {
+            from: "ratings",
+            localField: "tconst",
+            foreignField: "tconst",
+            as: "ratings"
+        }
+    },
+    {
+        $lookup: {
+            from: "cast",
+            localField: "tconst",
+            foreignField: "tconst",
+            as: "cast"
+        }
+    },
+    { $addFields: { ratings: { $first: "$ratings" } } },
+    {
+        $out: "newmovies"
+    }
+])
+
+db.ratings.createIndex(
+    {
+        "tconst": 1
+    }
+)
+
+db.cast.createIndex(
+    {
+        "tconst": 1
+    }
+)
