@@ -1,29 +1,86 @@
-import * as React from 'react';
-import logo from "../assets/logo.png"
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import React from "react";
+import logo from "../assets/logo.png";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import {
+  InputAdornment,
+  IconButton,
+  Box,
+  Grid,
+  Link,
+  TextField,
+  CssBaseline,
+  Button,
+  Typography,
+  Container,
+} from "@mui/material";
+import { useState } from "react";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import * as validator from "email-validator";
 
 const theme = createTheme();
+const userBaseURL = "http://localhost:1337/api/users";
 
-export default function SignUp() {
-  const handleSubmit = (event) => {
+export default function Register() {
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
+
+  const [fname, setFname] = useState("");
+  const [lname, setLname] = useState("");
+  const [email, setEmail] = useState("");
+  const [pwd, setPwd] = useState("");
+
+  const [emailTaken, setEmailTaken] = useState(false);
+  const [emailHelper, setEmailHelper] = useState("");
+
+  async function emailChecker(e) {
+    if (e.target.value) {
+      if (!validator.validate(e.target.value)) {
+        setEmailHelper("Not a valid email...");
+        return
+      } else {
+        setEmailHelper("")
+      }
+      
+      let candidateEmail = e.target.value;
+      let url = new URL(userBaseURL + "/email-check");
+
+      url.search = new URLSearchParams({ email: candidateEmail });
+      const res = await fetch(url);
+
+      const result = await res.json();
+      if (!result.isTaken) {
+        setEmail(candidateEmail);
+        setEmailTaken(false);
+      } else {
+        setEmailTaken(true);
+        setEmailHelper("Email unvailable");
+      }
+    }
+  }
+
+  async function handleSubmit(event) {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    console.log(`${fname} ${lname} ${email} ${pwd}`);
+    // const res = await fetch(
+    //   new URL("http://localhost:1337/api/users/insert/"),
+    //   {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       fname,
+    //       lname,
+    //       email,
+    //       pwd,
+    //     }),
+    //   }
+    // )
 
-    
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+    // const data = await res.json();
+    // console.log(data)
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -52,9 +109,14 @@ export default function SignUp() {
             alt="I am DB logo"
           />
           <Typography component="h1" variant="h5">
-            Sign up
+            Register
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
+          >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -65,6 +127,7 @@ export default function SignUp() {
                   id="firstName"
                   label="First Name"
                   autoFocus
+                  onChange={(e) => setFname(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -75,16 +138,20 @@ export default function SignUp() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
+                  onChange={(e) => setLname(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
+                  error={emailTaken}
+                  helperText={emailHelper}
                   id="email"
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  onBlur={emailChecker}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -93,9 +160,23 @@ export default function SignUp() {
                   fullWidth
                   name="password"
                   label="Password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   autoComplete="new-password"
+                  onChange={(e) => setPwd(e.target.value)}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                        >
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               </Grid>
               {/* <Grid item xs={12}>
@@ -108,14 +189,15 @@ export default function SignUp() {
             <Button
               type="submit"
               fullWidth
+              disabled={emailTaken}
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              Register
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href='/login' variant="body2">
+                <Link href="/login" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>

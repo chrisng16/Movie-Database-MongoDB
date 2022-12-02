@@ -10,16 +10,14 @@ import Register from "./pages/Register";
 
 const App = () => {
   const [titles, setTitles] = useState([]);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedInStatus, setLoggedInStatus] = useState(false);
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home setTitles={setTitles} />}>
+        <Route path="/" element={<Home setTitles={setTitles} loggedInStatus={loggedInStatus} />}>
           <Route path="index" element={<Index />} />
-          <Route
-            path="search"
-            element={<Search titles={titles} />} ></Route>
-          <Route path="login" element={<Login />} />
+          <Route path="search" element={<Search titles={titles} />} />
+          <Route path="login" element={<Login setLoggedIn={setLoggedInStatus}/>} />
           <Route path="register" element={<Register />} />
         </Route>
         <Route path="title/:tconst" element={<Title />} />

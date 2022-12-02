@@ -128,17 +128,17 @@ const deleteReview = async (req, res) => {
 }
 
 const deleteTitle = async (req, res) => {
-  const primaryTitle = req.body.primaryTitle
-  const startYear = req.body.startYear
+  const primaryTitle = req.body.primaryTitle;
+  const startYear = req.body.startYear;
 
-  const result = await Title.deleteOne({ primaryTitle: { primaryTitle } })
+  const result = await Title.deleteOne({  primaryTitle: {  primaryTitle  }  });
 
   res.status(200).json(result, { msg: `${primaryTitle} is updated` })
 }
 
 const updateTitle = async (req, res) => {
-  const primaryTitle = req.body.primaryTitle || 'demo'
-  const startYear = req.body.startYear || 2022
+  const primaryTitle = req.body.primaryTitle || "demo";
+  const startYear = req.body.startYear || 2022;
 
   const result = await Title.updateOne({ primaryTitle: { primaryTitle } }, { $set: { startYear: { startYear } } })
 
@@ -166,7 +166,7 @@ const getTitles = async (req, res) => {
 
   // Base query (return db.collection.find() if no option passed)
   const queryObject = {};
-  
+
   // Types of query
   if (primaryTitle) {
     queryObject.primaryTitle = { $regex: primaryTitle, $options: "i" };
@@ -198,12 +198,12 @@ const getTitles = async (req, res) => {
     );
 
     const options = ["startYear", "runtimeMinutes"];
-    filters = filters.split(',').forEach((item) => {
-      const [field, operator, value] = item.split('-')
-      if (options.includes(flield)) {
-        queryObject[field] = { [operator]: Number(value) }
+    filters = filters.split(",").forEach((item) => {
+      const [field, operator, value] = item.split("-");
+      if  (options.includes(flield)) {
+        queryObject[field] = {  [operator]: Number(value)  };
       }
-    })
+    });
   }
 
   let result = Title.find(queryObject);
