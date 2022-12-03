@@ -6,16 +6,11 @@ const getAllTitles = async (req, res) => {
 };
 
 const insertTitle = async (req, res) => {
-
-  // temp = JSON.stringify(req.body)
-
-  // const primaryTitle = String(req.body.primaryTitle)
-  // const startYear = Number(req.body.startYear)
-  console.log(typeof (String(req.body.primaryTitle)))
+  console.log(req.body)
 
   const result = await Title.create(req.body)
 
-  res.status(200).json({ result, msg: 'demo is inserted' })
+  res.status(200).json({ result, msg: req.body.primaryTitle + ' is inserted' })
 }
 
 const getSimilarMovies = async (req, res) => {
@@ -136,10 +131,11 @@ const deleteReview = async (req, res) => {
 }
 
 const deleteTitle = async (req, res) => {
+  const tconst = req.body.tconst;
   const primaryTitle = req.body.primaryTitle;
-  console.log("primaryTitle: " + primaryTitle);
+  console.log("Deleting this tconst: " + tconst + " pTitle: " + primaryTitle);
   
-  const result = await Title.deleteOne({ primaryTitle: primaryTitle});
+  const result = await Title.deleteOne({ tconst: tconst, primaryTitle: primaryTitle});
   res.status(200).json({ msg: `Acknowledged: ${result.acknowledged}, deletedCount: ${result.deletedCount}`})
 }
 

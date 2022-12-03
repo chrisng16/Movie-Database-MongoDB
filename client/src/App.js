@@ -8,6 +8,7 @@ import Title from "./pages/Title";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import CastDetail from "./pages/CastDetail";
+import AdminHome from "./pages/AdminHome";
 
 const App = () => {
   const [titles, setTitles] = useState([]);
@@ -39,6 +40,7 @@ const App = () => {
           <Route path="register" element={<Register />} />
           <Route path="cast/:nconst" element={<CastDetail />} />
           <Route path="title/:tconst" element={<Title />} />
+          <Route path="admin" element={<AdminHome />} />
         </Route>
       </Routes>
     </BrowserRouter>
