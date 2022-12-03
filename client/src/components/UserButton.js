@@ -3,8 +3,10 @@ import defaultAvatar from "../assets/avatar.jpeg";
 import "../styles/Home.css";
 import Avatar from "@mui/material/Avatar";
 import { useNavigate } from "react-router-dom";
+import { IconButton } from "@mui/material";
+import LogoutIcon from "@mui/icons-material/Logout";
 
-export const UserButton = ({ loggedInStatus }) => {
+export const UserButton = ({ user, setUser, loggedInStatus, setLoggedInStatus }) => {
   let navigate = useNavigate();
 
   const onClickHandler = (e) => {
@@ -20,6 +22,12 @@ export const UserButton = ({ loggedInStatus }) => {
         break;
     }
   };
+
+  const onLogOut = () => {
+    setUser(null)
+    setLoggedInStatus(false)
+    console.log(loggedInStatus)
+  }
 
   if (!loggedInStatus)
     return (
@@ -47,9 +55,12 @@ export const UserButton = ({ loggedInStatus }) => {
       <button className="default-button user-button">
         <Avatar src={defaultAvatar} />
         <label id="user-name-txtbox" placeholder="Avatar">
-          Avatar
+          {`Welcome Back, ${user.fname} ${user.lname}`}
         </label>
       </button>
+      <IconButton aria-label="logout" onClick={onLogOut}>
+        <LogoutIcon />
+      </IconButton>
     </div>
   );
 };

@@ -13,7 +13,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 
 const theme = createTheme();
 
-const Home = ({ setTitles, loggedInStatus }) => {
+const Home = ({user, setTitles, setUser, loggedInStatus, setLoggedInStatus }) => {
   const OPTION_NAME = "Name";
   const OPTION_YEAR = "Year";
   const OPTION_GENRE = "Genre";
@@ -117,7 +117,7 @@ const Home = ({ setTitles, loggedInStatus }) => {
             </div>
           </div>
 
-          <UserButton loggedInStatus={loggedInStatus} />
+          <UserButton user={user} setUser={setUser} loggedInStatus={loggedInStatus} setLoggedInStatus={setLoggedInStatus} />
         </div>
         <div className="h-divider" />
 

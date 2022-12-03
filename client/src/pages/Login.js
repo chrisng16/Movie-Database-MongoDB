@@ -15,22 +15,38 @@ import {
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
+const userBaseURL = "http://localhost:1337/api/users";
 
-export default function SignIn({ setLoggedInStatus }) {
+export default function SignIn({ setLoggedInStatus, setUser }) {
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    let url = new URL(userBaseURL + "/login");
+    url.search = new URLSearchParams({ email: email, password: password });
+
+    const res = await fetch(url);
+
+    const result = await res.json();
+    if (result.success) {
+      setUser(result.user)
+      setLoggedInStatus(true);
+      setEmail("")
+      setPassword("")
+      navigate("/")
+    }
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -77,6 +93,7 @@ export default function SignIn({ setLoggedInStatus }) {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
               margin="normal"
@@ -87,6 +104,7 @@ export default function SignIn({ setLoggedInStatus }) {
               type={showPassword ? "text" : "password"}
               id="password"
               autoComplete="current-password"
+              onChange={(e) => setPassword(e.target.value)}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">

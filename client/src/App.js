@@ -12,13 +12,30 @@ import CastDetail from "./pages/CastDetail";
 const App = () => {
   const [titles, setTitles] = useState([]);
   const [loggedInStatus, setLoggedInStatus] = useState(false);
+  const [user, setUser] = useState({});
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home setTitles={setTitles} loggedInStatus={loggedInStatus} />}>
+        <Route
+          path="/"
+          element={
+            <Home
+              setTitles={setTitles}
+              setUser={setUser}
+              loggedInStatus={loggedInStatus}
+              setLoggedInStatus={setLoggedInStatus}
+              user={user}
+            />
+          }
+        >
           <Route path="index" element={<Index />} />
           <Route path="search" element={<Search titles={titles} />} />
-          <Route path="login" element={<Login setLoggedIn={setLoggedInStatus} />} />
+          <Route
+            path="login"
+            element={
+              <Login setLoggedInStatus={setLoggedInStatus} setUser={setUser} />
+            }
+          />
           <Route path="register" element={<Register />} />
           <Route path="cast/:nconst" element={<CastDetail />} />
           <Route path="title/:tconst" element={<Title />} />

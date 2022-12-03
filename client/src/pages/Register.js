@@ -28,7 +28,7 @@ export default function Register() {
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
   const [email, setEmail] = useState("");
-  const [pwd, setPwd] = useState("");
+  const [password, setPassword] = useState("");
 
   const [emailTaken, setEmailTaken] = useState(false);
   const [emailHelper, setEmailHelper] = useState("");
@@ -41,7 +41,7 @@ export default function Register() {
       } else {
         setEmailHelper("")
       }
-      
+
       let candidateEmail = e.target.value;
       let url = new URL(userBaseURL + "/email-check");
 
@@ -59,28 +59,29 @@ export default function Register() {
     }
   }
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-    console.log(`${fname} ${lname} ${email} ${pwd}`);
-    // const res = await fetch(
-    //   new URL("http://localhost:1337/api/users/insert/"),
-    //   {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       fname,
-    //       lname,
-    //       email,
-    //       pwd,
-    //     }),
-    //   }
-    // )
+  async function handleSubmit(e) {
+    e.preventDefault();
+    console.log(`${fname} ${lname} ${email} ${password}`);
+    const res = await fetch(
+      new URL(userBaseURL+"/register/"),
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fname,
+          lname,
+          email,
+          password,
+        }),
+      }
+    )
 
-    // const data = await res.json();
-    // console.log(data)
+    const data = await res.json();
+    console.log(data)
   }
+  
 
   return (
     <ThemeProvider theme={theme}>
@@ -163,7 +164,7 @@ export default function Register() {
                   type={showPassword ? "text" : "password"}
                   id="password"
                   autoComplete="new-password"
-                  onChange={(e) => setPwd(e.target.value)}
+                  onChange={(e) => setPassword(e.target.value)}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
@@ -189,7 +190,7 @@ export default function Register() {
             <Button
               type="submit"
               fullWidth
-              disabled={emailTaken}
+              disabled={emailTaken||emailHelper.length!=0}
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
