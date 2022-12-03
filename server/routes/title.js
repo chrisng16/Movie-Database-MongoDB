@@ -7,7 +7,7 @@ router.route("/all").get(getAllTitles);
 router.route("/").get(getTitles)
 router.route("/insert").post(insertTitle)
 router.route("update").get(updateTitle)
-router.route("delete").get(deleteTitle)
+router.route("/delete").delete(deleteTitle)
 router.route("/:tconst").get(getTitleById)
 router.route("/:tconst/reviews/insert").post(insertReview)
 router.route("/:tconst/reviews/edit").post(updateReview)
