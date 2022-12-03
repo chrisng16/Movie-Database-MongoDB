@@ -11,9 +11,10 @@ import {
   Button,
   Typography,
   Container,
+  Alert,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
@@ -27,24 +28,40 @@ export default function SignIn({ setLoggedInStatus, setUser }) {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [logInError, setLogInError] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setUser(currentUser);
+
+    if (loggedIn) {
+      setLoggedInStatus(true);
+      setEmail("");
+      setPassword("");
+      navigate("/");
+    }
+    console.log("loggedIn Changed");
+  }, [loggedIn]);
 
   async function handleSubmit(e) {
     e.preventDefault();
 
     let url = new URL(userBaseURL + "/login");
     url.search = new URLSearchParams({ email: email, password: password });
-
+    console.log(url);
     const res = await fetch(url);
 
     const result = await res.json();
+
     if (result.success) {
-      setUser(result.user)
-      setLoggedInStatus(true);
-      setEmail("")
-      setPassword("")
-      navigate("/")
+      setCurrentUser(result.user);
+      setLoggedIn(true);
+      setLogInError(false);
+    } else {
+      setLogInError(true)
     }
   }
 
@@ -119,6 +136,9 @@ export default function SignIn({ setLoggedInStatus, setUser }) {
                 ),
               }}
             />
+            {logInError && <Alert severity="error" margin="normal">
+              Wrong Email or Password. Try again...
+            </Alert>}
             <Button
               type="submit"
               fullWidth

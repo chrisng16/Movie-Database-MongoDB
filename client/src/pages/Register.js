@@ -61,7 +61,7 @@ export default function Register() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    console.log(`${fname} ${lname} ${email} ${password}`);
+
     const res = await fetch(
       new URL(userBaseURL+"/register/"),
       {
@@ -180,17 +180,11 @@ export default function Register() {
                   }}
                 />
               </Grid>
-              {/* <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid> */}
             </Grid>
             <Button
               type="submit"
               fullWidth
-              disabled={emailTaken||emailHelper.length!=0}
+              disabled={emailTaken||emailHelper.length!==0}
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >

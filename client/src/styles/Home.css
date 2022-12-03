@@ -74,6 +74,10 @@
   display: flex;
   align-items: center;
 }
+
+.user-button-container > label {
+  margin-inline: 10px;
+}
 .default-button {
   height: 100%;
   display: flex;

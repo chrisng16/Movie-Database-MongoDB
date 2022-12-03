@@ -6,7 +6,7 @@ const app = express();
 
 const connectDB = require("./db/connect");
 
-const titleRouter = require("./routes/titles");
+const titleRouter = require("./routes/title");
 const userRouter = require("./routes/user");
 const namesRouter = require("./routes/names");
 
