@@ -8,11 +8,12 @@ import Title from "./pages/Title";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import CastDetail from "./pages/CastDetail";
+import User from "./pages/User";
 
 const App = () => {
   const [titles, setTitles] = useState([]);
   const [loggedInStatus, setLoggedInStatus] = useState(false);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
   return (
     <BrowserRouter>
       <Routes>
@@ -36,6 +37,7 @@ const App = () => {
               <Login setLoggedInStatus={setLoggedInStatus} setUser={setUser} />
             }
           />
+          <Route path="user" element={<User user={user} setUser={setUser} />} />
           <Route path="register" element={<Register />} />
           <Route path="cast/:nconst" element={<CastDetail />} />
           <Route path="title/:tconst" element={<Title />} />

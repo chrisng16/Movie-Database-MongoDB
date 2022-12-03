@@ -11,9 +11,17 @@ import { UserButton } from "../components/UserButton";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
+import LogoutIcon from "@mui/icons-material/Logout";
+
 const theme = createTheme();
 
-const Home = ({user, setTitles, setUser, loggedInStatus, setLoggedInStatus }) => {
+const Home = ({
+  user,
+  setTitles,
+  setUser,
+  loggedInStatus,
+  setLoggedInStatus,
+}) => {
   const OPTION_NAME = "Name";
   const OPTION_YEAR = "Year";
   const OPTION_GENRE = "Genre";
@@ -27,6 +35,7 @@ const Home = ({user, setTitles, setUser, loggedInStatus, setLoggedInStatus }) =>
   const [filterOption, setFilterOption] = useState(false);
   const [sortBy, setSortBy] = useState(searchOption);
   const [sortOrder, setSortOrder] = useState(SORT_ORDER_ASCENDING);
+  
   const baseURL = "http://localhost:1337/api/titles";
 
   let navigate = useNavigate();
@@ -75,6 +84,12 @@ const Home = ({user, setTitles, setUser, loggedInStatus, setLoggedInStatus }) =>
       }
     }
   }
+  const onLogOut = (e) => {
+    setLoggedInStatus(false)
+    setUser({})
+    navigate('/')
+  }
+
   const filterOptionHandler = (e) => {
     setFilterOption(!filterOption);
     console.log(`Filter changed: ${filterOption}`);
@@ -117,7 +132,15 @@ const Home = ({user, setTitles, setUser, loggedInStatus, setLoggedInStatus }) =>
             </div>
           </div>
 
-          <UserButton user={user} setUser={setUser} loggedInStatus={loggedInStatus} setLoggedInStatus={setLoggedInStatus} />
+          <UserButton
+            user={user}
+            setUser={setUser}
+            loggedInStatus={loggedInStatus}
+            setLoggedInStatus={setLoggedInStatus}
+          />
+          {loggedInStatus && <IconButton aria-label="logout" onClick={onLogOut}>
+            <LogoutIcon />
+          </IconButton>}
         </div>
         <div className="h-divider" />
 
