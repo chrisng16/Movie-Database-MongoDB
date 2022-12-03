@@ -137,11 +137,10 @@ const deleteReview = async (req, res) => {
 
 const deleteTitle = async (req, res) => {
   const primaryTitle = req.body.primaryTitle;
-  const startYear = req.body.startYear;
-
-  const result = await Title.deleteOne({ primaryTitle: { primaryTitle } });
-
-  res.status(200).json(result, { msg: `${primaryTitle} is updated` })
+  console.log("primaryTitle: " + primaryTitle);
+  
+  const result = await Title.deleteOne({ primaryTitle: primaryTitle});
+  res.status(200).json({ msg: `Acknowledged: ${result.acknowledged}, deletedCount: ${result.deletedCount}`})
 }
 
 const updateTitle = async (req, res) => {
