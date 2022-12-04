@@ -12,6 +12,7 @@ import {
   Button,
   Typography,
   Container,
+  Alert,
 } from "@mui/material";
 import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -30,6 +31,8 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [registerSuccess, setRegisterSuccess] = useState(false)
+
   const [emailTaken, setEmailTaken] = useState(false);
   const [emailHelper, setEmailHelper] = useState("");
 
@@ -37,9 +40,9 @@ export default function Register() {
     if (e.target.value) {
       if (!validator.validate(e.target.value)) {
         setEmailHelper("Not a valid email...");
-        return
+        return;
       } else {
-        setEmailHelper("")
+        setEmailHelper("");
       }
 
       let candidateEmail = e.target.value;
@@ -62,26 +65,24 @@ export default function Register() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const res = await fetch(
-      new URL(userBaseURL+"/register/"),
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          fname,
-          lname,
-          email,
-          password,
-        }),
-      }
-    )
+    const res = await fetch(new URL(userBaseURL + "/register/"), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        fname,
+        lname,
+        email,
+        password,
+      }),
+    });
 
-    const data = await res.json();
-    console.log(data)
+    const result = await res.json();
+    if (result.success === 1) {
+      setRegisterSuccess(true)
+    }
   }
-  
 
   return (
     <ThemeProvider theme={theme}>
@@ -180,11 +181,18 @@ export default function Register() {
                   }}
                 />
               </Grid>
+
+              {registerSuccess && <Grid item xs={12}>
+                <Alert severity="success" margin="normal">
+                  Successfully Register!
+                </Alert>
+              </Grid>}
             </Grid>
+
             <Button
               type="submit"
               fullWidth
-              disabled={emailTaken||emailHelper.length!==0}
+              disabled={emailTaken || emailHelper.length !== 0}
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >

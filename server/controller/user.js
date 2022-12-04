@@ -8,7 +8,7 @@ const getUserByEmail = async (req, res) => {
 const insertUser = async (req, res) => {
   const result = await User.create(req.body);
   console.log(result);
-  res.status(200).json({ result, msg: "User Created" });
+  res.status(200).json({ result, success:1});
 };
 
 const updateUser = async (req, res) => {

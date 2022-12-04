@@ -1,31 +1,32 @@
-sudo mkdir -p /db/rs1/repl1/data /db/rs2/repl1/data /db/config/config1/data
-sudo chown mongodb:mongodb db
+﻿sudo mkdir -p /project/rs1/repl1/data /project/rs2/repl1/data /project/config/config1/data
+sudo chown mongodb:mongodb /project
 
-sudo mkdir -p /db/rs1/repl2/data /db/rs2/repl2/data /db/config/config2/data
-sudo chown mongodb:mongodb db
+sudo mkdir -p /project/rs1/repl2/data /project/rs2/repl2/data /project/config/config2/data
+sudo chown mongodb:mongodb /project
 
-sudo mkdir -p /db/rs1/repl3/data /db/rs2/repl3/data /db/config/config3/data
-sudo chown mongodb:mongodb /db
+sudo mkdir -p /project/rs1/repl3/data /project/rs2/repl3/data /project/config/config3/data
+sudo chown mongodb:mongodb /project
 
+#!/bin/bash
 sudo mongos --configdb crs/172.31.10.236:27018,172.31.6.114:27018,172.31.12.113:27018 --bind_ip_all
 
 #n-1 172.31.10.236
 #!/bin/bash
-sudo mongod --configsvr  --port 27018 --dbpath /db/config/config1/data --replSet crs --logpath /var/log/mongodb/mongod.log --fork --bind_ip_all
-sudo mongod --shardsvr --port 27019 --dbpath /db/rs1/repl1/data --replSet rs1 --logpath /var/log/mongodb/mongod.log --fork --bind_ip_all
-sudo mongod --shardsvr --port 27020 --dbpath /db/rs2/repl1/data --replSet rs2 --logpath /var/log/mongodb/mongod.log --fork --bind_ip_all
+sudo mongod --configsvr  --port 27018 --dbpath /project/config/config1/data --replSet crs --logpath /var/log/mongodb/mongod.log --fork --bind_ip_all
+sudo mongod --shardsvr --port 27019 --dbpath /project/rs1/repl1/data --replSet rs1 --logpath /var/log/mongodb/mongod.log --fork --bind_ip_all
+sudo mongod --shardsvr --port 27020 --dbpath /project/rs2/repl1/data --replSet rs2 --logpath /var/log/mongodb/mongod.log --fork --bind_ip_all
 
 #n-2
 #!/bin/bash
-sudo mongod --configsvr  --port 27018 --dbpath /db/config/config2/data --replSet crs --logpath /var/log/mongodb/mongod.log --fork --bind_ip_all
-sudo mongod --shardsvr --port 27019 --dbpath /db/rs1/repl2/data --replSet rs1 --logpath /var/log/mongodb/mongod.log --fork --bind_ip_all
-sudo mongod --shardsvr --port 27020 --dbpath /db/rs2/repl2/data --replSet rs2 --logpath /var/log/mongodb/mongod.log --fork --bind_ip_all
+sudo mongod --configsvr  --port 27018 --dbpath /project/config/config2/data --replSet crs --logpath /var/log/mongodb/mongod.log --fork --bind_ip_all
+sudo mongod --shardsvr --port 27019 --dbpath /project/rs1/repl2/data --replSet rs1 --logpath /var/log/mongodb/mongod.log --fork --bind_ip_all
+sudo mongod --shardsvr --port 27020 --dbpath /project/rs2/repl2/data --replSet rs2 --logpath /var/log/mongodb/mongod.log --fork --bind_ip_all
 
 #n-3
 #!/bin/bash
-sudo mongod --configsvr  --port 27018 --dbpath /db/config/config3/data --replSet crs --logpath /var/log/mongodb/mongod.log --fork --bind_ip_all
-sudo mongod --shardsvr --port 27019 --dbpath /db/rs1/repl3/data --replSet rs1 --logpath /var/log/mongodb/mongod.log --fork --bind_ip_all
-sudo mongod --shardsvr --port 27020 --dbpath /db/rs2/repl3/data --replSet rs2 --logpath /var/log/mongodb/mongod.log --fork --bind_ip_all
+sudo mongod --configsvr  --port 27018 --dbpath /project/config/config3/data --replSet crs --logpath /var/log/mongodb/mongod.log --fork --bind_ip_all
+sudo mongod --shardsvr --port 27019 --dbpath /project/rs1/repl3/data --replSet rs1 --logpath /var/log/mongodb/mongod.log --fork --bind_ip_all
+sudo mongod --shardsvr --port 27020 --dbpath /project/rs2/repl3/data --replSet rs2 --logpath /var/log/mongodb/mongod.log --fork --bind_ip_all
 
 mongosh --port 2701
 

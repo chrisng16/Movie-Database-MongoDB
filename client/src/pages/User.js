@@ -16,7 +16,7 @@ import {
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import SelectInput from "@mui/material/Select/SelectInput";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 const userBaseURL = "http://localhost:1337/api/users";
@@ -35,6 +35,8 @@ export default function User({ user, setUser }) {
   const [lname, setLname] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const navigate = useNavigate()
 
   function checkPassword(e) {
     if (!(newPassword === confirmPassword)) {
@@ -159,7 +161,7 @@ export default function User({ user, setUser }) {
                 </Grid>
               </Grid>
 
-              {changePassword && (
+              {changePassword && 
                 <Grid container spacing={2} m={2}>
                   <Grid item xs={12}>
                     <TextField
@@ -224,7 +226,7 @@ export default function User({ user, setUser }) {
                     />
                   </Grid>
                 </Grid>
-              )}
+              }
             </Grid>
             {showAlert && (
               <Alert severity={alertStatus} margin="normal">
@@ -239,6 +241,14 @@ export default function User({ user, setUser }) {
             >
               Save Changes
             </Button>
+            {/* <Button
+              fullWidth
+              variant="contained"
+              sx={{ mb: 2 }}
+              onClick={navigate("/")}
+            >
+              Close
+            </Button> */}
           </Box>
         </Box>
       </Container>
